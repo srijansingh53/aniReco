@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Top Anime</title>
+</head>
+<body>
+	<h1> Here we show the top Anime of all times</h1>
+
+	{% if categories %}
+		{% for category in categories %}
+		<div>
+		 <h2>{{ category.anime_name }}</h2>
+		 {{ category.anime_rank }}
+		 {{ category.anime_score }}
+		 {{ category.anime_rating }}
+		 {{ category.anime_popularity }}
+		 {{ category.total_members }}<br>
+		 <img src="{{ category.anime_thumbnail }}" class="img-responsive" style="width: 5%; float: left; margin-right: 10px;" />
+		 {{ category.synopsis }}
+		 {{ category.start_season }}
+		 {{ category.start_year }}
+		 {{ category.total_episodes }}
+		 <br>
+		 {{ category.status }}
+
+		 {% endfor %}
+		</div>
+	{% endif %}
+
+</body>
+</html>
