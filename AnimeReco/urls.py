@@ -21,7 +21,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     url(r'^general/', include('general.urls')),
     url(r'^recommendation/', include('recommendation.urls')),
-    url(r'^recommendation', include('recommendation.urls')),
     url(r'', include('general.urls')),
     
 ]
