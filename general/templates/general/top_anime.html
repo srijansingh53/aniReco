@@ -29,6 +29,37 @@
 	    </div>
   	{% endfor %}
   	{% endif %}
+  	
+  	{% if categories.has_other_pages %}
+	  	<ul class="pagination">
+	  		{% if categories.has_previous %}
+	  			<a href="?page={{ categories.previous_page_number }}">&laquo;</a></li>
+	  		{% else %}
+	  			<li class="disabled"><span>&laquo;</span></li>
+	  		{% endif %}
+	  		{% for i in categories.paginator.page_range %}
+	  			{% if categories.number > 3 and forloop.first %}
+			  		<li><a href="?page=1">1</a></li>
+			  		<li class="disabled">⋯</li>
+				 {% endif %}
+				{% if categories.number == i %}
+					<li class="active"><span>{{ i }} <span class="sr-only">(current)</span></li>
+				{% elif i > categories.number|add:'-3' and i < categories.number|add:'3' %}
+					<li><a href="?page={{ i }}">{{ i }}</a></li>
+				{% endif %}
+				{% if categories.paginator.num_pages > categories.number|add:'3' and forloop.last %}
+					<li>⋯</li>
+					<li><a href="?page={{ categories.paginator.num_pages }}">{{ categories.paginator.num_pages }}</a></li>
+				{% endif %}
+			{% endfor %}
+			{% if categories.has_next %}
+				<li><a href="?page={{ users.next_page_number }}">&raquo;</a></li>
+			{% else %}
+				<li class="disabled">»</li>
+			{% endif %}
+		</ul>
+	{% endif %}
+
 
 
     <!-- Option 1: jQuery and Bootstrap Bundle (includes Popper) -->

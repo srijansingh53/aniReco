@@ -1,6 +1,9 @@
 from django.shortcuts import render
 from .models import Anime
 import pandas as pd
+from django.views.generic import ListView
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
 # Create your views here.
 
 """
@@ -34,14 +37,23 @@ import pandas as pd
 
 	"""
 
+
 def home(request):
-
-
+	anime_list = Anime.objects.all()
 	return render(request, 'general/home.html')
 
-def top_anime(request):
-    anime_list = Anime.objects.order_by('anime_rank')[:5]
-    anime_dict = {'categories': anime_list}
-    print(anime_dict)
 
-    return render(request, 'general/top_anime.html', anime_dict)
+
+def top_anime(request):
+
+    anime_list = Anime.objects.order_by('anime_rank')
+    page = request.GET.get('page', 1)
+    paginator = Paginator(anime_list, 5)
+    try:
+        anime_dict = paginator.page(page)
+    except PageNotAnInteger:
+    	anime_dict = paginator.page(1)
+    except EmptyPage:
+    	anime_dict = paginator.page(paginator.num_pages)
+
+    return render(request, 'general/top_anime.html',{ 'categories':anime_dict })
