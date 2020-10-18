@@ -39,8 +39,9 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
 def home(request):
-	anime_list = Anime.objects.all()
-	return render(request, 'general/home.html')
+	anime_list = [Anime.objects.filter(anime_name__istartswith=i) for i in "ABCDEFGHIJKLMNOPQRSTUVWXYZ"]
+	
+	return render(request, 'general/home.html',{ 'categories':anime_list })
 
 
 
