@@ -17,6 +17,93 @@
   
     <h1>Welcome to aniReco</h1>
 
+     <ul>
+                	<li class="first-char">
+                   		<a href="s" rel="all" class="active">All</a>
+                    </li>
+                    <li class="first-char">
+                   		<a href="/list-0" rel="0" class="">#</a>
+                    </li>
+                	                    <li class="first-char">
+                   		<a href="/general/A" rel="" class="">A</a>
+                    </li>
+                                        <li class="first-char">
+                   		<a href="/general/B" rel="" class="">B</a>
+                    </li>
+                                        <li class="first-char">
+                   		<a href="/general/C" rel="" class="">C</a>
+                    </li>
+                                        <li class="first-char">
+                   		<a href="/general/D" rel="" class="">D</a>
+                    </li>
+                                        <li class="first-char">
+                   		<a href="/general/E" rel="" class="">E</a>
+                    </li>
+                                        <li class="first-char">
+                   		<a href="/general/F" rel="" class="">F</a>
+                    </li>
+                                        <li class="first-char">
+                   		<a href="/general/G" rel="" class="">G</a>
+                    </li>
+                                        <li class="first-char">
+                   		<a href="/general/H" rel="" class="">H</a>
+                    </li>
+                                        <li class="first-char">
+                   		<a href="/general/I" rel="" class="">I</a>
+                    </li>
+                                        <li class="first-char">
+                   		<a href="/general/J" rel="" class="">J</a>
+                    </li>
+                                        <li class="first-char">
+                   		<a href="/general/K" rel="" class="">K</a>
+                    </li>
+                                        <li class="first-char">
+                   		<a href="/general/L" rel="" class="">L</a>
+                    </li>
+                                        <li class="first-char">
+                   		<a href="/general/M" rel="" class="">M</a>
+                    </li>
+                                        <li class="first-char">
+                   		<a href="/general/N" rel="" class="">N</a>
+                    </li>
+                                        <li class="first-char">
+                   		<a href="/general/O" rel="" class="">O</a>
+                    </li>
+                                        <li class="first-char">
+                   		<a href="/general/P" rel="" class="">P</a>
+                    </li>
+                                        <li class="first-char">
+                   		<a href="/general/Q" rel="" class="">Q</a>
+                    </li>
+                                        <li class="first-char">
+                   		<a href="/general/R" rel="" class="">R</a>
+                    </li>
+                                        <li class="first-char">
+                   		<a href="/general/S" rel="" class="">S</a>
+                    </li>
+                                        <li class="first-char">
+                   		<a href="/general/T" rel="" class="">T</a>
+                    </li>
+                                        <li class="first-char">
+                   		<a href="/general/U" rel="" class="">U</a>
+                    </li>
+                                        <li class="first-char">
+                   		<a href="/general/V" rel="" class="">V</a>
+                    </li>
+                                        <li class="first-char">
+                   		<a href="/general/W" rel="" class="">W</a>
+                    </li>
+                                        <li class="first-char">
+                   		<a href="/general/X" rel="" class="">X</a>
+                    </li>
+                                        <li class="first-char">
+                   		<a href="/general/Y" rel="" class="">Y</a>
+                    </li>
+                                        <li class="first-char">
+                   		<a href="/general/Z" rel="" class="">Z</a>
+                    </li>
+     </ul>
+
 
     {% if categories %}
 	{% for category in categories %}
@@ -34,6 +121,36 @@
   	{% endfor %}
   	{% endif %}
 
+
+{% if categories.has_other_pages %}
+	  	<ul class="pagination">
+	  		{% if categories.has_previous %}
+	  			<a href="?page={{ categories.previous_page_number }}">&laquo;</a></li>
+	  		{% else %}
+	  			<li class="disabled"><span>&laquo;</span></li>
+	  		{% endif %}
+	  		{% for i in categories.paginator.page_range %}
+	  			{% if categories.number > 3 and forloop.first %}
+			  		<li><a href="?page=1">1</a></li>
+			  		<li class="disabled">⋯</li>
+				 {% endif %}
+				{% if categories.number == i %}
+					<li class="active"><span>{{ i }} <span class="sr-only">(current)</span></li>
+				{% elif i > categories.number|add:'-3' and i < categories.number|add:'3' %}
+					<li><a href="?page={{ i }}">{{ i }}</a></li>
+				{% endif %}
+				{% if categories.paginator.num_pages > categories.number|add:'3' and forloop.last %}
+					<li>⋯</li>
+					<li><a href="?page={{ categories.paginator.num_pages }}">{{ categories.paginator.num_pages }}</a></li>
+				{% endif %}
+			{% endfor %}
+			{% if categories.has_next %}
+				<li><a href="?page={{ users.next_page_number }}">&raquo;</a></li>
+			{% else %}
+				<li class="disabled">»</li>
+			{% endif %}
+		</ul>
+	{% endif %}
 
 
 

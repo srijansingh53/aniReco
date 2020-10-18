@@ -3,6 +3,7 @@ from .models import Anime
 import pandas as pd
 from django.views.generic import ListView
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.http import HttpResponse
 
 # Create your views here.
 
@@ -40,21 +41,32 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 def home(request):
 	anime_list = [Anime.objects.filter(anime_name__istartswith=i) for i in "ABCDEFGHIJKLMNOPQRSTUVWXYZ"]
-	
-	return render(request, 'general/home.html',{ 'categories':anime_list })
-
+	return render(request, 'general/home.html',{ 'categories':anime_list[0][:5] })
 
 
 def top_anime(request):
+	anime_list = Anime.objects.order_by('anime_rank')
+	page = request.GET.get('page', 1)
+	paginator = Paginator(anime_list, 5)
+	try:
+		anime_dict = paginator.page(page)
+	except PageNotAnInteger:
+		anime_dict = paginator.page(1)
+	except EmptyPage:
+		anime_dict = paginator.page(paginator.num_pages)
+	return render(request, 'general/top_anime.html',{ 'categories':anime_dict })
 
-    anime_list = Anime.objects.order_by('anime_rank')
-    page = request.GET.get('page', 1)
-    paginator = Paginator(anime_list, 5)
-    try:
-        anime_dict = paginator.page(page)
-    except PageNotAnInteger:
-    	anime_dict = paginator.page(1)
-    except EmptyPage:
-    	anime_dict = paginator.page(paginator.num_pages)
 
-    return render(request, 'general/top_anime.html',{ 'categories':anime_dict })
+def pages(request, anime_alphabet):
+	anime_list = [Anime.objects.filter(anime_name__istartswith=i) for i in "ABCDEFGHIJKLMNOPQRSTUVWXYZ"]
+	alphabets_string = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+	index = alphabets_string.find(str(anime_alphabet))
+	page = request.GET.get('page', 1)
+	paginator = Paginator(anime_list[index], 5)
+	try:
+		anime_dict = paginator.page(page)
+	except PageNotAnInteger:
+		anime_dict = paginator.page(1)
+	except EmptyPage:
+		anime_dict = paginator.page(paginator.num_pages)
+	return render(request, 'general/home.html',{ 'categories':anime_dict })
