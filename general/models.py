@@ -2,7 +2,7 @@ from django.db import models
 
 
 class Anime(models.Model):
-	anime_id = models.IntegerField()
+	anime_id = models.IntegerField(primary_key = True)
 	anime_name = models.CharField(max_length=100,default="Missing")
 	anime_synonyms = models.CharField(max_length=300, default="Missing")
 	anime_type = models.CharField(max_length=50, default="Missing")
