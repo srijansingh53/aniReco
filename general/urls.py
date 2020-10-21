@@ -8,6 +8,6 @@ urlpatterns = [
 url(r'^$', views.home, name='home'),
 url(r'^home/$', views.home, name='home'),
 url(r'^top_anime/$', views.top_anime, name='top_anime'),
-re_path(r'^(?P<anime_alphabet>[A-Z]+)/$', views.pages, name='detail'),
+re_path(r'^(?P<anime_alphabet>\w+)/$', views.pages, name='detail'),
 
 ]

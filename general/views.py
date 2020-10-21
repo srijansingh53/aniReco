@@ -4,6 +4,7 @@ import pandas as pd
 from django.views.generic import ListView
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import HttpResponse
+from django.db.models import Q, Subquery
 
 # Create your views here.
 
@@ -41,13 +42,13 @@ from django.http import HttpResponse
 
 def home(request):
 	anime_list = [Anime.objects.filter(anime_name__istartswith=i) for i in "ABCDEFGHIJKLMNOPQRSTUVWXYZ"]
-	return render(request, 'general/home.html',{ 'categories':anime_list[0][:5] })
+	return render(request, 'general/home.html',{ 'categories':anime_list[0][:18] })
 
 
 def top_anime(request):
 	anime_list = Anime.objects.order_by('anime_rank')
 	page = request.GET.get('page', 1)
-	paginator = Paginator(anime_list, 5)
+	paginator = Paginator(anime_list, 18)
 	try:
 		anime_dict = paginator.page(page)
 	except PageNotAnInteger:
@@ -58,15 +59,25 @@ def top_anime(request):
 
 
 def pages(request, anime_alphabet):
-	anime_list = [Anime.objects.filter(anime_name__istartswith=i) for i in "ABCDEFGHIJKLMNOPQRSTUVWXYZ"]
-	alphabets_string = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-	index = alphabets_string.find(str(anime_alphabet))
-	page = request.GET.get('page', 1)
-	paginator = Paginator(anime_list[index], 18)
-	try:
-		anime_dict = paginator.page(page)
-	except PageNotAnInteger:
-		anime_dict = paginator.page(1)
-	except EmptyPage:
-		anime_dict = paginator.page(paginator.num_pages)
-	return render(request, 'general/home.html',{ 'categories':anime_dict })
+	if request.method == 'GET':
+		if anime_alphabet=='all':
+			anime_list = Anime.objects.all()
+			page = request.GET.get('page', 1)
+			paginator = Paginator(anime_list, 18)
+
+		elif anime_alphabet=='misc':
+			anime_list = Anime.objects.exclude(anime_name__regex=r'^[a-zA-Z]')
+			page = request.GET.get('page', 1)
+			paginator = Paginator(anime_list, 18)
+
+		else:
+			anime_list = Anime.objects.filter(anime_name__istartswith=str(anime_alphabet))
+			page = request.GET.get('page', 1)
+			paginator = Paginator(anime_list, 18)
+		try:
+			anime_dict = paginator.page(page)
+		except PageNotAnInteger:
+			anime_dict = paginator.page(1)
+		except EmptyPage:
+			anime_dict = paginator.page(paginator.num_pages)
+		return render(request, 'general/home.html',{ 'categories':anime_dict })

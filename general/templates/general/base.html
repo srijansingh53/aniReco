@@ -28,6 +28,7 @@
             <!-- Items -->
             <div class="collapse navbar-collapse" id="topNavBar">
                 <ul class="nav navbar-nav">
+                    <li class="{% block home_active %}{% endblock %}"><a href="{% url 'general:home' %}"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp; Home</a></li>
                     <li class="{% block topanime_active %}{% endblock %}"><a href="{% url 'general:top_anime' %}"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp; Top Anime</a></li>
                     <li class="{% block newseason_active %}{% endblock %}"><a href="#"><span class="glyphicon glyphicon-comment" aria-hidden="true"></span>&nbsp; New Season</a></li>
                 </ul>

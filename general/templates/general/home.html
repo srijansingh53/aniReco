@@ -1,5 +1,7 @@
 {% extends 'general/base.html' %}
 {% block title %}Home{% endblock %}
+{% block home_active %}active{% endblock %}
+
 {% block body %}
 <div class="container-fluid">
     <div class="row">
@@ -10,10 +12,10 @@
     <div class="row text-center">
     <ul class="list-inline">
         <li class="first-char">
-       		<a href="s" rel="all" class="active">All</a>
+       		<a href="/general/all" rel="all" class="active">All</a>
         </li>
         <li class="first-char">
-       		<a href="/list-0" rel="0" class="">#</a>
+       		<a href="/general/misc" rel="" class="">#</a>
         </li>
     	   <li class="first-char">
        		<a href="/general/A" rel="" class="">A</a>
@@ -114,29 +116,27 @@
 {% if categories.has_other_pages %}
   	<ul class="pagination">
   		{% if categories.has_previous %}
-  			<a href="?page={{ categories.previous_page_number }}">&laquo;</a></li>
+  			<li><a href="?page={{ categories.previous_page_number }}">&laquo;</a></li>
   		{% else %}
   			<li class="disabled"><span>&laquo;</span></li>
   		{% endif %}
   		{% for i in categories.paginator.page_range %}
-  			{% if categories.number > 3 and forloop.first %}
+  			{% if categories.number > 5 and forloop.first %}
 		  		<li><a href="?page=1">1</a></li>
-		  		<li class="disabled">⋯</li>
 			 {% endif %}
 			{% if categories.number == i %}
 				<li class="active"><span>{{ i }} <span class="sr-only">(current)</span></li>
-			{% elif i > categories.number|add:'-3' and i < categories.number|add:'3' %}
+			{% elif i > categories.number|add:'-5' and i < categories.number|add:'5' %}
 				<li><a href="?page={{ i }}">{{ i }}</a></li>
 			{% endif %}
-			{% if categories.paginator.num_pages > categories.number|add:'3' and forloop.last %}
-				<li>⋯</li>
+			{% if categories.paginator.num_pages > categories.number|add:'5' and forloop.last %}
 				<li><a href="?page={{ categories.paginator.num_pages }}">{{ categories.paginator.num_pages }}</a></li>
 			{% endif %}
 		{% endfor %}
 		{% if categories.has_next %}
-			<li><a href="?page={{ users.next_page_number }}">&raquo;</a></li>
+			<li><a href="?page={{ categories.next_page_number }}">&raquo;</a></li>
 		{% else %}
-			<li class="disabled">»</li>
+			<li class="disabled"><span>&raquo;</span></li>
 		{% endif %}
 	</ul>
 {% endif %}
