@@ -62,7 +62,7 @@ def pages(request, anime_alphabet):
 	alphabets_string = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 	index = alphabets_string.find(str(anime_alphabet))
 	page = request.GET.get('page', 1)
-	paginator = Paginator(anime_list[index], 5)
+	paginator = Paginator(anime_list[index], 18)
 	try:
 		anime_dict = paginator.page(page)
 	except PageNotAnInteger:
