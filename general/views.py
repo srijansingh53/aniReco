@@ -70,3 +70,40 @@ def pages(request, anime_alphabet):
 	except EmptyPage:
 		anime_dict = paginator.page(paginator.num_pages)
 	return render(request, 'general/home.html',{ 'categories':anime_dict })
+
+
+
+def genre(request):
+	genrename = ["Comedy","Supernatural","Romance","Shounen","Parody","School","Magic","Shoujo","Drama",  \
+    "Fantasy","Kids","Action","Music","SliceofLife","Josei","Harem","ShounenAi","Adventure","SuperPower","Sci-Fi",   \
+    "Ecchi","Seinen","MartialArts","Game","Sports","Demons","Historical","Horror","Mystery","Psychological",      \
+    "Vampire","Mecha","Military","Space","Samurai","Thriller","Hentai","Yaoi","ShoujoAi","Police","Cars",       \
+    "Dementia","Yuri"]
+	lists = []
+	for gen in genrename:
+		if request.GET.get(str(gen), 'off') == "on":
+			lists.append(gen)
+	context = { 'genrename':genrename }
+
+	try:
+		anime_dict = Anime.objects.filter(genre__in=lists)
+		#print(lists)
+		#print(anime_dict)
+		page = request.GET.get('page', 1)
+		paginator = Paginator(anime_dict, 18)
+		try:
+			anime_dict = paginator.page(page)
+		except PageNotAnInteger:
+			anime_dict = paginator.page(1)
+		except EmptyPage:
+			anime_dict = paginator.page(paginator.num_pages)
+		context = { 'genrename':genrename ,'categories':anime_dict }
+
+
+        
+	except:
+		pass		
+
+
+
+	return render(request, 'general/genre.html', context)
